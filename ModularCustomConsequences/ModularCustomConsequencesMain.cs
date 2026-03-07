@@ -31,6 +31,7 @@ using System.Text.RegularExpressions;
 using BepInEx.Logging;
 using DiscordRPC;
 using MTCustomScripts.Patches;
+using BattleUI;
 
 namespace MTCustomScripts;
 
@@ -42,7 +43,7 @@ public class Main : BasePlugin
 {
     // Edit the below to your own plugin name, version, etc.
     public const string NAME = "MTCustomScripts";
-    public const string VERSION = "8.64.25";
+    public const string VERSION = "8.68.25";
     public const string AUTHOR = "MT";
     public const string GUID = $"{AUTHOR}.{NAME}";
 
@@ -182,22 +183,10 @@ public class Main : BasePlugin
     {
         public void ExecuteConsequence(ModularSA modular, string section, string circledSection, string[] circles)
         {
-            // var dataDetail = modular.modsa_selfAction._targetDataDetail;
-            // var SinActionList = dataDetail.GetTargetSinActionList();
-            // var dataSet = dataDetail.GetCurrentTargetSet()._subTargetList;
-            // modular.modsa_selfAction._targetDataDetail.GetCurrentTargetSet()._subTargetList.RemoveAt(0);
-            // modular.modsa_selfAction._targetDataDetail.GetCurrentTargetSet()._subTargetList.RemoveAt(1);
-            // modular.modsa_selfAction._targetDataDetail.GetCurrentTargetSet()._subTargetList.RemoveAt(2);
-            // modular.modsa_selfAction._targetDataDetail.GetCurrentTargetSet()._subTargetList.RemoveAt(3);
-            foreach(CoinAbility CA in modular.modsa_skillModel._coinList[0]._coinAbilityList)
+            CoinSlotListUI coinList = UnityEngine.Object.FindObjectOfType<CoinSlotListUI>();
+            foreach(CoinSlotUI coinSlotUI in coinList._slots)
             {
-                if (CA is CoinAbility_CanDealOnlySubTarget coinAbility_CanDealOnlySubTarget)
-                {
-                    foreach(var t in coinAbility_CanDealOnlySubTarget._triggerDictionary)
-                    {
-                        Logger.LogMessage($"Timing: {t.Key.ToString()} - {t.value.ToString()}");
-                    }
-                }
+                coinSlotUI.UpdateCoinColor(new Color(0f, 0.5f, 0.5f));
             }
         }
     }
@@ -264,9 +253,12 @@ public class Main : BasePlugin
             harmony.PatchAll(typeof(BuffModel_OverwritePanic));
             harmony.PatchAll(typeof(EquipDefenseOperation));
             harmony.PatchAll(typeof(BuffModelPatch));
+            // harmony.PatchAll(typeof(CoinSlotUI_UpdateCoinColor));
+            harmony.PatchAll(typeof(StyxPatch));
             // harmony.PatchAll(typeof(SystemAbilityDetail_Patch));
             // harmony.PatchAll(typeof(RightAfterGiveBuffBySkill));
-
+            
+            // harmony.PatchAll(typeof(RightAfterGetAnyBuff));
             // MainClass.timingDict.Add("OnGainBuff", 1337);
             // MainClass.timingDict.Add("OnInflictBuff", 1733);
         }
@@ -319,6 +311,8 @@ public class Main : BasePlugin
             MainClass.acquirerDict["getopposkillid"] = new MTCustomScripts.Acquirers.AcquirerGetOppoSkillId();
             MainClass.acquirerDict["getabilitymoduleproperty"] = new MTCustomScripts.Acquirers.AcquirerGetAbilityModuleProperty();
             MainClass.acquirerDict["getcurrentpower"] = new MTCustomScripts.Acquirers.AcquirerGetCurrentPower();
+            MainClass.acquirerDict["getdefaulthp"] = new MTCustomScripts.Acquirers.AcquirerGetDefaultHp();
+            MainClass.acquirerDict["gethpincrement"] = new MTCustomScripts.Acquirers.AcquirerGetHpIncrementByLevel();
         } catch (System.Exception ex) { Main.Logger.LogError("Error when loading Acquirers: " + ex); }
 
         try
@@ -356,6 +350,12 @@ public class Main : BasePlugin
             MainClass.consequenceDict["setmaintarget"] = new MTCustomScripts.Consequences.ConsequenceSetMainTarget();
             MainClass.consequenceDict["addcoinability"] = new MTCustomScripts.Consequences.ConsequenceAddCoinAbility();
             MainClass.consequenceDict["setspusage"] = new MTCustomScripts.Consequences.ConsequenceSetSpUsage();
+            // MainClass.consequenceDict["addego"] = new MTCustomScripts.Consequences.ConsequenceAddEgo();
+            MainClass.consequenceDict["disableidle"] = new MTCustomScripts.Consequences.ConsequenceDisableIdle();
+            MainClass.consequenceDict["setskillamount"] = new MTCustomScripts.Consequences.ConsequenceSetSkillAmount();
+            MainClass.consequenceDict["setlevel"] = new MTCustomScripts.Consequences.ConsequenceSetLevel();
+            MainClass.consequenceDict["setmaxhp"] = new MTCustomScripts.Consequences.ConsequenceSetMaxHp();
+            MainClass.consequenceDict["addcoinabilitybasicbuff"] = new MTCustomScripts.Consequences.ConsequenceAddCoinAbilityBasicBuff();
         } catch (System.Exception ex) { Main.Logger.LogError("Error when loading Consequences: " + ex); }
 
         try
