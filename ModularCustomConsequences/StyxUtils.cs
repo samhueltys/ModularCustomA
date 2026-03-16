@@ -7,7 +7,7 @@ namespace MTCustomScripts
 {
     public static class StyxUtils
     {
-        /*
+        
         public static int NullableBoolToInt(Il2CppSystem.Nullable<bool> nullableValue)
         {
             int nullableResult = -1;
@@ -25,7 +25,6 @@ namespace MTCustomScripts
             }
             return nullableResult;
         }
-        */
 
         public static System.Collections.Generic.List<T> ToSystem<T>(this Il2CppSystem.Collections.Generic.List<T> il2cppList)
         {

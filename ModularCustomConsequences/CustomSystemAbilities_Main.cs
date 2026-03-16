@@ -1,11 +1,9 @@
-﻿using Dungeon.Railway;
-using Il2CppSystem;
+﻿using Il2CppSystem;
 using ModularSkillScripts;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
-using static MirrorDungeonSelectThemeUIPanel.UIResources;
 
 namespace MTCustomScripts
 {
@@ -1073,9 +1071,6 @@ namespace MTCustomScripts
 
             return permanentAtkAdder + temporaryAtkAdder;
         }
-
-
-
 
         //-------------------------------------------------------------------------------------------------------------------------------------------------------------//
         //-------------------------------------------------------------------------------------------------------------------------------------------------------------//

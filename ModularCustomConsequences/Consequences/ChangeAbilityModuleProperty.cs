@@ -67,9 +67,9 @@ namespace MTCustomScripts.Consequences
 
                     object selectedItem = null;
                     if (modularAbility.currentClassInfo.lookupDict.TryGetValue(circles[2], out var getter)) selectedItem = getter(modularAbility.currentClassInfo);
+                    
                     if (selectedItem == null) return;
-
-                    if (selectedItem is ModularSystemAbilityStaticData_BundledParam dataBundle)
+                    else if (selectedItem is ModularSystemAbilityStaticData_BundledParam dataBundle)
                     {
                         switch (circles[3].ToLower())
                         {
