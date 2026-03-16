@@ -282,14 +282,7 @@ namespace MTCustomScripts
 
         public static void TreatCoinAbilities(SkillCoinData coinData, string fullAbility)
         {
-            string[] stringAbilityArray = new string[0];
-
-            if (!fullAbility.Contains('|'))
-            {
-                stringAbilityArray.AddToArray<string>(fullAbility);
-            }
-
-            stringAbilityArray.AddRangeToArray<string>(fullAbility.Split(['|'], System.StringSplitOptions.RemoveEmptyEntries));
+            string[] stringAbilityArray = (fullAbility.Contains('|')) ? fullAbility.Split(['|'], System.StringSplitOptions.RemoveEmptyEntries) : new string[] { fullAbility };
 
             for (int i = 0; i < stringAbilityArray.Length; i++)
             {

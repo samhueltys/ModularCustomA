@@ -31,6 +31,7 @@ using System.Text.RegularExpressions;
 using BepInEx.Logging;
 using DiscordRPC;
 using MTCustomScripts.Patches;
+using Il2CppInterop.Runtime.Injection;
 
 namespace MTCustomScripts;
 
@@ -317,7 +318,7 @@ public class Main : BasePlugin
         AddTiming(harmony, typeof(PanicOrLowMorale), new string[] { "OnPanic", "OnotherPanic", "OnLowMorale", "OnOtherLowMorale" }, new int[] { 90901, 90902, 90903, 90904 });
         AddTiming(harmony, typeof(RecoverBreak), new string[] { "OnRecoverBreak", "OnOtherRecoverBreak" }, new int[] { 90905, 90906 });
         AddTiming(harmony, typeof(LoseAnyBuff), new string[] { "OnLoseBuff", "OnBeforeLoseBuff" }, new int[] { 90907, 90908 });
-        AddTiming(null, null, new string[] { "GiveBuffStack", "GiveBuffTurn", "GainBuffStack", "GainBuffTurn" }, new int[] { 90909, 90910 });
+        AddTiming(null, null, new string[] { "GiveBuffStack", "GiveBuffTurn", "GainBuffStack", "GainBuffTurn" }, new int[] { 90909, 90910, 90911, 90912 });
 
         try
         {
@@ -327,7 +328,8 @@ public class Main : BasePlugin
             harmony.PatchAll(typeof(BuffModel_OverwritePanic));
             harmony.PatchAll(typeof(EquipDefenseOperation));
             harmony.PatchAll(typeof(BuffModelPatch));
-            harmony.PatchAll(typeof(SystemAbilityDetail_Patch));
+            harmony.PatchAll(typeof(Test_Patch));
+            harmony.PatchAll(typeof(RemoveSkillRestore_Patch));
             // harmony.PatchAll(typeof(RightAfterGiveBuffBySkill));
 
             // MainClass.timingDict.Add("OnGainBuff", 1337);
@@ -420,7 +422,9 @@ public class Main : BasePlugin
             // MainClass.consequenceDict["reload"] = new ConsequenceReload();
         } catch (System.Exception ex) { Main.Logger.LogError("Error when loading Test Consequences/Acquirers: " + ex); }
 
+        /*
         var newModularSystemAbilityDatabase = new ModularSystemAbilityStaticDataList();
         ModularSystemAbilityStaticDataList.Initialize(newModularSystemAbilityDatabase);
+        */
     }
 }

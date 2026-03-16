@@ -13,25 +13,24 @@ namespace MTCustomScripts.Consequences
 
             try
             {
-
                 Il2CppSystem.Collections.Generic.List<BattleUnitModel> unitList = modular.GetTargetModelList(circles[0]);
                 if (unitList.Count <= 0) return;
 
-                System.Collections.Generic.List<int> skillIdList = new System.Collections.Generic.List<int>();
-                foreach (SkillModel currentSkill in modular.GetMultipleSkillModel(unitList, circles[1])) skillIdList.Add(currentSkill.GetID());
-                if (skillIdList.Count <= 0) return;
+
+                Il2CppSystem.Collections.Generic.List<SkillModel> skillList = modular.GetMultipleSkillModel(unitList, circles[1]);
+                if (skillList.Count <= 0) return;
 
                 foreach (BattleUnitModel unit in unitList)
                 {
-                    for (int i = 0; i < skillIdList.Count; i++)
+                    Il2CppSystem.Collections.Generic.List<SkillModel> removeSkillList = new Il2CppSystem.Collections.Generic.List<SkillModel>();
+                    for (int i = 0; i < skillList.Count; i++)
                     {
-                        if (unit.UnitDataModel.HasSkill(skillIdList[i])) unit.UnitDataModel._skillList.Remove(unit.UnitDataModel.GetSkillModel(skillIdList[i]));
-                        UnitAttribute skillAttribute = unit.UnitDataModel._unitAttributeList.ToSystem().Find(x => x.SkillId == skillIdList[i]);
-                        if (skillAttribute != null) unit.UnitDataModel._unitAttributeList.Remove(skillAttribute);
-
-                        BattleUnitView unitView = SingletonBehavior<BattleObjectManager>.Instance.GetView(unit);
-                        if (unitView != null && unitView._battleSkillViewers.ContainsKey(skillIdList[i].ToStringSmallGC())) unitView._battleSkillViewers.Remove(skillIdList[i].ToStringSmallGC());
+                        UnitAttribute skillAttribute = unit.UnitDataModel._unitAttributeList.ToSystem().Find(x => x.SkillId == skillList[i].GetID());
+                        if (skillAttribute != null) skillAttribute.number = 0;
                     }
+
+                    foreach (SkillModel removeSkill in removeSkillList) skillList.Remove(removeSkill);
+                    removeSkillList.Clear();
                 }
             }
             catch (System.Exception ex) { Main.Logger.LogError("ConsequenceRemoveSkill error: " + ex); }
