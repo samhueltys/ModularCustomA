@@ -17,7 +17,7 @@ internal class Modular_EnactConsequence
             {
                 string matchValue = match.Groups[1].Value;
 
-                object foundData = MTCustomScripts.Main.GetCustomMTData(__instance?.modsa_unitModel, matchValue);
+                object foundData = MTCustomScripts.Main.GetCustomMTData(__instance.modsa_unitModel.Pointer.ToInt64(), matchValue);
                 return (foundData != null) ? foundData.ToString() : matchValue;
             });
         }

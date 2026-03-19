@@ -154,10 +154,8 @@ public class Main : BasePlugin
         }
     }
 
-    public static object GetCustomMTData(BattleUnitModel unit, string dataID, string dataSource = null, System.Type dataType = null)
+    public static object GetCustomMTData(long unit_longptr, string dataID, string dataSource = null, System.Type dataType = null)
     {
-        long unit_longptr = unit?.Pointer.ToInt64() ?? 0;
-
         var storedMTDataDict = Main.Instance.storedMTDataDict;
 
         if (storedMTDataDict.TryGetValue(unit_longptr, out System.Collections.Generic.List<MTModData> foundDataList))
@@ -430,6 +428,7 @@ public class Main : BasePlugin
 
         try
         {
+            storedMTDataDict.Add(0, new System.Collections.Generic.List<MTModData>());
             translatedDataTypesDict.Add("string", typeof(string));
             translatedDataTypesDict.Add("int", typeof(int));
             translatedDataTypesDict.Add("integer", typeof(int));

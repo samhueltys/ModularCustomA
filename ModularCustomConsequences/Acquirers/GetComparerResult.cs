@@ -29,7 +29,7 @@ public class AcquirerGetComparerResult : IModularAcquirer
         Type lookupType = null;
         if (circles.Length >= 5 && !string.IsNullOrEmpty(translationType)) mainClass.translatedDataTypesDict.TryGetValue(translationType, out lookupType);
 
-        object dataValue = Main.GetCustomMTData(unit, circles[3], dataSource, lookupType);
+        object dataValue = Main.GetCustomMTData(unit.Pointer.ToInt64(), circles[3], dataSource, lookupType);
         if (dataValue == null) return -1;
 
 
