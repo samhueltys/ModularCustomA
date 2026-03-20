@@ -23,7 +23,11 @@ public class AcquirerGetMapData : IModularAcquirer
             case "size": return (int)selectedMap.GetMapSize();
             case "active": return selectedMap.IsActive() ? 1 : 0;
             case "id":
+<<<<<<< HEAD
                 Main.SetCustomMTData(modular.modsa_unitModel.Pointer.ToInt64(), circles[2], selectedMap.GetMapID(), "GetMapData");
+=======
+                Main.SetCustomMTData(modular.modsa_unitModel.Pointer.ToInt64(), circles[2], selectedMap.GetMapID(), "GetMapData", typeof(string));
+>>>>>>> 81656175d64b8560643ab39bbcdbdb2061d2b473
                 return 1;
         }
     }

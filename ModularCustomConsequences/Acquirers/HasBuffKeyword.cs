@@ -62,7 +62,11 @@ public class AcquirerHasBuffKeyword : IModularAcquirer
         }
 
         if (flag == true && circles.Length > 4 && circles[4] != null && circles[4] == "print")
+<<<<<<< HEAD
             Main.SetCustomMTData(modular.modsa_unitModel.Pointer.ToInt64(), "BuffKeyword_" + circles[2], keywordPrint, "HasBuffKeyword");
+=======
+            Main.SetCustomMTData(modular.modsa_unitModel.Pointer.ToInt64(), "BuffKeyword_" + circles[2], keywordPrint, "HasBuffKeyword", typeof(string));
+>>>>>>> 81656175d64b8560643ab39bbcdbdb2061d2b473
 
         return flag ? 1 : 0;
     }

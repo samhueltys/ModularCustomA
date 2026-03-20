@@ -13,11 +13,15 @@ namespace MTCustomScripts.Consequences
 
             try
             {
+
                 Il2CppSystem.Collections.Generic.List<BattleUnitModel> unitList = modular.GetTargetModelList(circles[0]);
                 if (unitList.Count <= 0) return;
 
+<<<<<<< HEAD
                 Main mainClass = Main.Instance;
 
+=======
+>>>>>>> 81656175d64b8560643ab39bbcdbdb2061d2b473
                 System.Collections.Generic.List<int> skillIdList = new System.Collections.Generic.List<int>();
                 foreach (SkillModel currentSkill in modular.GetMultipleSkillModel(unitList, circles[1])) skillIdList.Add(currentSkill.GetID());
                 if (skillIdList.Count <= 0) return;
@@ -26,12 +30,19 @@ namespace MTCustomScripts.Consequences
                 {
                     for (int i = 0; i < skillIdList.Count; i++)
                     {
+<<<<<<< HEAD
                         if (unit.UnitDataModel.ClassInfo.GetSkillIds().Contains(skillIdList[i])) mainClass.storedRemoveSkillHash.Add(skillIdList[i]);
 
                         if (unit.UnitDataModel.HasSkill(skillIdList[i])) unit.UnitDataModel._skillList.Remove(unit.UnitDataModel.GetSkillModel(skillIdList[i]));
                         UnitAttribute skillAttribute = unit.UnitDataModel._unitAttributeList.ToSystem().Find(x => x.SkillId == skillIdList[i]);
                         if (skillAttribute != null) unit.UnitDataModel._unitAttributeList.Remove(skillAttribute);
 
+=======
+                        if (unit.UnitDataModel.HasSkill(skillIdList[i])) unit.UnitDataModel._skillList.Remove(unit.UnitDataModel.GetSkillModel(skillIdList[i]));
+                        UnitAttribute skillAttribute = unit.UnitDataModel._unitAttributeList.ToSystem().Find(x => x.SkillId == skillIdList[i]);
+                        if (skillAttribute != null) unit.UnitDataModel._unitAttributeList.Remove(skillAttribute);
+
+>>>>>>> 81656175d64b8560643ab39bbcdbdb2061d2b473
                         BattleUnitView unitView = SingletonBehavior<BattleObjectManager>.Instance.GetView(unit);
                         if (unitView != null && unitView._battleSkillViewers.ContainsKey(skillIdList[i].ToStringSmallGC())) unitView._battleSkillViewers.Remove(skillIdList[i].ToStringSmallGC());
                     }

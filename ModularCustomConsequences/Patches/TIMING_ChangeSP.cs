@@ -71,6 +71,8 @@ namespace MTCustomScripts.Patches
                 }
             }
 
+            if (actevent_other == 0) return;
+
             BattleObjectManager battleObjManager_inst = SingletonBehavior<BattleObjectManager>.Instance;
             foreach (BattleUnitModel unit in battleObjManager_inst.GetAliveListExceptSelf(__instance, false, false))
             {
