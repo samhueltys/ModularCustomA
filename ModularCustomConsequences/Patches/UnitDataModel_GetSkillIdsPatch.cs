@@ -45,6 +45,16 @@ namespace MTCustomScripts.Patches
             if (main.storedRemoveSkillHash.Count > 0) main.storedRemoveSkillHash.Clear();
         }
 
+        [HarmonyPatch(typeof(StageModel), nameof(StageModel.OnStageEnd))]
+        [HarmonyPrefix]
+        public static void StageModel_OnStageEnd_Prefix(StageModel __instance)
+        {
+            Main main = Main.Instance;
+            if (main.changeMpDict.Count > 0) main.changeMpDict.Clear();
+            if (main.storedMTDataDict.Count > 0) main.storedMTDataDict.Clear();
+            if (main.storedRemoveSkillHash.Count > 0) main.storedRemoveSkillHash.Clear();
+        }
+
         [HarmonyPatch(typeof(Data), nameof(Data.LoadCustomLocale), new[] { typeof(LOCALIZE_LANGUAGE) })]
         [HarmonyPostfix, HarmonyPriority(Priority.Normal)]
         public static void Data_LoadCustomLocale_Postfix(LOCALIZE_LANGUAGE lang)

@@ -1,7 +1,8 @@
 using HarmonyLib;
 using Lethe.Patches;
+using ModularSkillScripts;
 
-namespace ModularSkillScripts.Patches;
+namespace MTCustomScripts.Patches;
 
 internal class Modular_SetupModular
 {   
@@ -46,7 +47,7 @@ internal class Modular_SetupModular
                     {
                         parsedKeyword = BUFF_UNIQUE_KEYWORD.None;
                     }
-                    MTCustomScripts.Main.Instance.keywordTriggerDict[__instance.Pointer.ToInt64()] = parsedKeyword;
+                    Main.Instance.keywordTriggerDict[__instance.Pointer.ToInt64()] = parsedKeyword;
                     MainClass.Logg.LogInfo("Parsed keyword trigger for OnGainBuff: " + parsedKeyword.ToString());
                 // }
                 // if (circle_0 == "SpecialAction")
@@ -56,7 +57,7 @@ internal class Modular_SetupModular
 
                 if (circle_0 == "OnGainBuff")
                 {
-                    MTCustomScripts.Main.Instance.keywordTriggerDict[__instance.Pointer.ToInt64()] = BUFF_UNIQUE_KEYWORD.None;
+                    Main.Instance.keywordTriggerDict[__instance.Pointer.ToInt64()] = BUFF_UNIQUE_KEYWORD.None;
                 }
             }
             // else if (batch.StartsWith("LUA:", StringComparison.OrdinalIgnoreCase))

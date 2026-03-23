@@ -25,9 +25,6 @@ namespace MTCustomScripts.Consequences
 
             string dataSource = (circles.Length >= 3) ? circles[2] : null;
 
-            string dataSource = (circles.Length >= 5) ? circles[4] : null;
-            string translationType = (circles.Length >= 4) ? circles[3] : null;
-
             BattleUnitModel unit = modular.GetTargetModel(circles[0]);
             long unit_longptr = (unit != null) ? unit.Pointer.ToInt64() : 0;
 
