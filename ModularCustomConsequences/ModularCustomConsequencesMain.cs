@@ -209,7 +209,7 @@ public class Main : BasePlugin
     {
         public void ExecuteConsequence(ModularSA modular, string section, string circledSection, string[] circles)
         {
-            Singleton<SinManager>.Instance.RefreshTargetManager();
+            
         }
     }
 
@@ -290,6 +290,7 @@ public class Main : BasePlugin
             harmony.PatchAll(typeof(BuffModel_OverwritePanic));
             harmony.PatchAll(typeof(EquipDefenseOperation));
             // harmony.PatchAll(typeof(CoinSlotUI_UpdateCoinColor));
+            // harmony.PatchAll(typeof(StyxPatch));
             // harmony.PatchAll(typeof(SystemAbilityDetail_Patch));
             // harmony.PatchAll(typeof(RightAfterGiveBuffBySkill));
             

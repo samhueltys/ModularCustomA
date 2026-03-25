@@ -136,7 +136,6 @@ namespace MTCustomScripts.Acquirers
                     result = skill.GetID();
                 break;
             }
-
             return result;
         }
     }
