@@ -15,7 +15,7 @@ public class ConsequenceInstantDeath : IModularConsequence
         BattleActionModel act = circles.Length > 4 ? (circles[4] == "Self" ? modular.modsa_selfAction : modular.modsa_oppoAction) : null;
         foreach(BattleUnitModel target in targetList)
         {
-            if (ingoreImmortal) target.InstantDeathIgnoreImmortal(source, modular.battleTiming, killer, act);
+            if (ingoreImmortal) {target.InstantDeathIgnoreImmortal(source, modular.battleTiming, killer, act);} else {target.InstantDeath(source, modular.battleTiming, killer, act);}
         }
     }
 }
