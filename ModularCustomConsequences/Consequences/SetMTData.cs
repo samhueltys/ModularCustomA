@@ -21,18 +21,14 @@ namespace MTCustomScripts.Consequences
              */
 
             if (circles.Length < 3) return;
+            if (string.IsNullOrEmpty(circles[1]) || string.IsNullOrEmpty(circles[2])) return;
 
-            string dataSource = (circles.Length >= 5) ? circles[4] : null;
-            string translationType = (circles.Length >= 4) ? circles[3] : null;
+            string dataSource = (circles.Length >= 3) ? circles[2] : null;
 
             BattleUnitModel unit = modular.GetTargetModel(circles[0]);
             long unit_longptr = (unit != null) ? unit.Pointer.ToInt64() : 0;
 
-            Type lookupType = null;
-            if (circles.Length >= 5 && !string.IsNullOrEmpty(translationType)) Main.Instance.translatedDataTypesDict.TryGetValue(translationType, out lookupType);
-
-
-            Main.SetCustomMTData(unit_longptr, circles[1], circles[2], dataSource, lookupType);
+            Main.SetCustomMTData(unit_longptr, circles[1], circles[2], dataSource);
         }
     }
 }

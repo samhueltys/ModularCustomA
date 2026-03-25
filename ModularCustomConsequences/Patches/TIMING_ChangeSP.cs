@@ -22,7 +22,7 @@ namespace MTCustomScripts.Patches
 
         [HarmonyPatch(typeof(BattleUnitModel), nameof(BattleUnitModel.OnTakeMpDamage))]
         [HarmonyPostfix, HarmonyPriority(Priority.VeryHigh)]
-        public static void Postfix_BattleUnitModel_OnTakeMpDamage(BattleUnitModel __instance, BattleUnitModel attacker, int value, BATTLE_EVENT_TIMING timing, DAMAGE_SOURCE_TYPE sourceType, BASE_MENTAL_CONDITION mentalConditionOrNone, BattleActionModel actionOrNull, BUFF_UNIQUE_KEYWORD buffkeyword = BUFF_UNIQUE_KEYWORD.None)
+        public static void Postfix_BattleUnitModel_OnTakeMpDamage(BattleUnitModel __instance, BattleUnitModel attacker, int value, BATTLE_EVENT_TIMING timing, DAMAGE_SOURCE_TYPE sourceType, BASE_MENTAL_CONDITION mentalConditionOrNone, BattleActionModel actionOrNull, BUFF_UNIQUE_KEYWORD buffKeyword = BUFF_UNIQUE_KEYWORD.None)
         {
             int actevent = MainClass.timingDict["OnTakeSPDamage"];
             int actevent_other = MainClass.timingDict["OnOtherTakeSPDamage"];

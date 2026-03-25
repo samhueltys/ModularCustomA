@@ -17,17 +17,16 @@ namespace MTCustomScripts.Acquirers
 
             if (circles.Length < 2) return -1;
 
-            string dataSource = (circles.Length >= 4) ? circles[3] : null;
-            string translationType = (circles.Length >= 3) ? circles[2] : null;
+            string dataSource = (circles.Length >= 3) ? circles[2] : null;
 
             BattleUnitModel unit = modular.GetTargetModel(circles[0]);
             long unit_longptr = (unit != null) ? unit.Pointer.ToInt64() : 0;
 
-            Type lookupType = null;
-            if (circles.Length >= 4 && !string.IsNullOrEmpty(translationType)) Main.Instance.translatedDataTypesDict.TryGetValue(translationType, out lookupType);
+            string data = Main.GetCustomMTData(unit_longptr, circles[1], dataSource);
+            if (string.IsNullOrWhiteSpace(data)) return -1;
 
-            if (Main.GetCustomMTData(unit_longptr, circles[1], dataSource, lookupType) is int final) return final;
-            return -1;
+            int dataValue = modular.GetNumFromParamString(data);
+            return dataValue;
         }
     }
 }

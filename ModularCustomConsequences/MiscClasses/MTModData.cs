@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace MTCustomScripts.MiscClasses
 {
-    public class MTModData(string dataID, object dataValue)
+    public class MTModData(string dataID, string dataValue, string dataSource)
     {
         public string dataID = dataID;
-        public object dataValue = dataValue;
-
-        public System.Type dataType;
-        public string dataSource;
+        public string dataValue = dataValue;
+        public string dataSource = (string.IsNullOrWhiteSpace(dataSource)) ? string.Empty : dataSource;
     }
 }
