@@ -17,7 +17,7 @@ namespace MTCustomScripts.Acquirers
 
             BattleUnitModel unit = modular.GetTargetModel(circles[0]);
             SkillModel skill = modular.GetSingleSkillModel(unit, circles[1]);
-            Il2CppSystem.Collections.Generic.List<CoinModel> selectedCoins = (circles.Length >= 4 && circles[3] != null) ? modular.GetCoinModelList(skill, circles[3], null) : null;
+            Il2CppSystem.Collections.Generic.List<CoinModel> selectedCoins = (circles.Length >= 4 && circles[3] != null) ? modular.GetMultipleCoin(skill, circles[3], null) : null;
             bool isNotCoin = (selectedCoins.Count == 0) ? true : false;
             COIN_ROLL_TYPE rollType = (modular.battleTiming == BATTLE_EVENT_TIMING.ON_START_DUEL || modular.battleTiming == BATTLE_EVENT_TIMING.BEFORE_ROLL_COIN_PARRYING) ? COIN_ROLL_TYPE.PARRYING : COIN_ROLL_TYPE.ACTION;
 

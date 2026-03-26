@@ -1,4 +1,6 @@
+using BepInEx;
 using ModularSkillScripts;
+using ModularSkillScripts.Patches;
 using System;
 
 namespace MTCustomScripts.Consequences;
@@ -7,13 +9,18 @@ public class ConsequenceAddSkillAbility : IModularConsequence
 {
     public void ExecuteConsequence(ModularSA modular, string section, string circledSection, string[] circles)
     {
-       /*
-        * var_1: target
-        * var_2: skill-target
-        * var_3: className
-        * var_4: scriptName
-        * var_5: turnLimit
-        */
+        /*
+         * var_1: target
+         * var_2: skill-target
+         * var_3: className
+         * var_4: scriptName
+         * var_5: turnLimit
+         */
+
+        if (circles.Length < 3) return;
+
+        string scriptName = (circles.Length < 4 || circles[3].IsNullOrWhiteSpace() || circles[3].ToLower() == "s") ? circles[2] : circles[3];
+        int turnLimit = (circles.Length < 5 || circles[4].IsNullOrWhiteSpace() || circles[4] == "0") ? 0 : modular.GetNumFromParamString(circles[4]);
 
         BattleUnitModel target = modular.GetTargetModel(circles[0]);
         if (target == null) return;
@@ -22,16 +29,36 @@ public class ConsequenceAddSkillAbility : IModularConsequence
         if (skill == null) return;
 
         string skillScriptName = circles[2];
-        skillScriptName = $"SkillAbility_{skillScriptName}";
-        try
+
+        if (circles[2].Equals("modreplace", StringComparison.OrdinalIgnoreCase))
         {
-            SkillAbility newSkillAbility = (SkillAbility)Activator.CreateInstance(typeof(SkillAbility).Assembly.GetType(skillScriptName));
-            skill._skillAbilityList.Add(newSkillAbility);
-            newSkillAbility.Init(skill, circles[3], 0, skill.SkillAbilityList.Count, modular.GetNumFromParamString(circles[4]), null);
+            circles[3] = circles[3].Replace(';', ':').Replace('\\', '/').Replace("<<", "(").Replace(">>", ")");
+            circles[3] = "TIMING:" + circles[3];
+
+            long ptr = skill.Pointer.ToInt64();
+
+            ModularSA modsa = new ModularSA();
+            modsa.originalString = "Modular/" + circles[3]; ;
+            modsa.modsa_skillModel = skill;
+            modsa.ptr_intlong = ptr;
+            modsa.SetupModular(circles[3]);
+
+            if (!SkillScriptInitPatch.modsaDict.ContainsKey(ptr)) SkillScriptInitPatch.modsaDict.Add(ptr, new Il2CppSystem.Collections.Generic.List<ModularSA>());
+            SkillScriptInitPatch.modsaDict[ptr].Add(modsa);
         }
-        catch (Exception msg)
+        else
         {
-            MTCustomScripts.Main.Logger.LogError($"Couldn't add skill script '{skillScriptName}': {msg}");
+            skillScriptName = $"SkillAbility_{skillScriptName}";
+            try
+            {
+                SkillAbility newSkillAbility = (SkillAbility)Activator.CreateInstance(typeof(SkillAbility).Assembly.GetType(skillScriptName));
+                skill._skillAbilityList.Add(newSkillAbility);
+                newSkillAbility.Init(skill, scriptName, 0, skill.SkillAbilityList.Count, turnLimit, null);
+            }
+            catch (Exception msg)
+            {
+                MTCustomScripts.Main.Logger.LogError($"Couldn't add skill script '{skillScriptName}': {msg}");
+            }
         }
     }
 }

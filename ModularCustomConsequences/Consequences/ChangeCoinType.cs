@@ -22,11 +22,11 @@ namespace MTCustomScripts.Consequences
             if (unitList.Count == 0) return;
 
             Il2CppSystem.Collections.Generic.List<SkillModel> selectedSkills = modular.GetMultipleSkillModel(unitList, circles[1]);
-            System.Collections.Generic.List<CoinModel> coinList = new System.Collections.Generic.List<CoinModel>();
+            System.Collections.Generic.List<CoinModel> coinList = [];
 
             foreach (SkillModel skill in selectedSkills)
             {
-                var coins = modular.GetCoinModelList(skill, circles[2], null);
+                var coins = modular.GetMultipleCoin(skill, circles[2], null);
                 foreach (var coin in coins) coinList.Add(coin);
             }
 

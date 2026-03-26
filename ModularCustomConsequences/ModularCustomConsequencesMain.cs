@@ -2,12 +2,7 @@
 using BepInEx;
 using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
-using DiscordRPC;
 using HarmonyLib;
-using Il2CppInterop.Runtime;
-using Il2CppInterop.Runtime.Injection;
-using Il2CppInterop.Runtime.InteropTypes;
-using Il2CppInterop.Runtime.Runtime;
 using Il2CppSystem.Collections.Generic;
 using Lethe;
 using Lethe.Patches;
@@ -32,7 +27,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI;
 using Utils;
 using View;
 

@@ -31,7 +31,7 @@ namespace MTCustomScripts.Consequences
                 {
                     BattleUnitModel targetUnit = modular.GetTargetModel(circles[3].Substring(4));
                     SkillModel targetSkill = modular.GetSingleSkillModel(targetUnit, circles[4]);
-                    CoinModel targetCoin = modular.GetCoinModelList(targetSkill, circles[5], null)[0];
+                    CoinModel targetCoin = modular.GetSingleCoin(targetSkill, circles[5], null);
 
                     if (circles[6].Equals("CopyStatic", System.StringComparison.OrdinalIgnoreCase)) newCoin = new CoinModel(targetCoin.ClassInfo, coinIndex);
                     else newCoin = new CoinModel(targetCoin, false);
