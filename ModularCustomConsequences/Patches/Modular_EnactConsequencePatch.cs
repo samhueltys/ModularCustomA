@@ -31,6 +31,26 @@ internal class Modular_EnactConsequence
         return true;
     }
 
+    [HarmonyPatch(typeof(ModularSA), nameof(ModularSA.GetTargetModel))]
+    [HarmonyPostfix, HarmonyPriority(Priority.Low)]
+    public static void Prefix_ModularSA_GetTargetModel(string param, ModularSA __instance, ref BattleUnitModel __result)
+    {
+        if (__result != null) return;
+
+        string paramCopy = param.ToLower();
+        BattleObjectManager objectManager = SingletonBehavior<BattleObjectManager>.Instance;
+
+        if (paramCopy.Contains("char"))
+        {
+            int notPosition = paramCopy.IndexOf("char") + 2;
+            string mode = (paramCopy.Length >= notPosition) ? (paramCopy[notPosition - 1] + paramCopy[notPosition]).ToString() : "0";
+
+            _ = int.TryParse(mode.TrimEnd('s'), out int charID);
+
+            __result = objectManager.GetModelByCharacterID(charID);
+        }
+    }
+
     [HarmonyPatch(typeof(ModularSA), nameof(ModularSA.GetTargetModelList))]
     [HarmonyPostfix, HarmonyPriority(Priority.Low)]
     public static void Postfix_ModularSA_GetTargetModelList(string param, ModularSA __instance, ref List<BattleUnitModel> __result)
