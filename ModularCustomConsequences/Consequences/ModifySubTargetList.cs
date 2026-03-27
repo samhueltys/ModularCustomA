@@ -1,4 +1,5 @@
 using ModularSkillScripts;
+using System.Collections.Generic;
 
 namespace MTCustomScripts.Consequences;
 
@@ -9,6 +10,12 @@ public class ConsequenceModifySubTargetList : IModularConsequence
         if (modular.modsa_selfAction == null) return;
         string mode = circles[0];
         Il2CppSystem.Collections.Generic.List<BattleUnitModel> targetList = modular.GetTargetModelList(circles[1]);
+        Il2CppSystem.Collections.Generic.List<BattleUnitModel> excludeList = modular.GetTargetModelList(circles[2]);
+
+        for (int i = excludeList.Count - 1; i > -1; i--)
+        {
+            if (excludeList.Contains(targetList[i])) targetList.RemoveAt(i);
+        }
 
         if (mode == "Add")
         {
