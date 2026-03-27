@@ -32,7 +32,15 @@ public class ConsequenceChangePanicLevel : IModularConsequence
                 continue;
             }
             else if (panicLevel == 1) unit.OnLowMorale(modular.battleTiming);
-            else if (panicLevel == 2) unit.OnPanic(modular.battleTiming);
+            else if (panicLevel == 2)
+            {
+                unit.OnPanic(modular.battleTiming);
+                if (circles.Length >= 3 && circles[2] != null && circles[2].Equals("NoCorrode", System.StringComparison.OrdinalIgnoreCase))
+                {
+                    unit._erosionData._isErodeThisTurn = false;
+                    Singleton<SinManager>.Instance.SetOffErodeSinActions(unit);
+                }
+            }
             else if (panicLevel == 3 && !unit._erosionData.HasOnlyDefaultEGO())
             {
                 BattleEgoModel chosenEgo = null;
