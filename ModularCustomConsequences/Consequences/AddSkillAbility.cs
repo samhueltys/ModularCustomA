@@ -53,14 +53,15 @@ public class ConsequenceAddSkillAbility : IModularConsequence
         else
         {
             skillScriptName = $"SkillAbility_{skillScriptName}";
+            BuffReferenceData buffData = (circles.Length < 6 || circles[5].IsNullOrWhiteSpace()) ? null : StyxUtils.TreatBuffData(circles[5]);
+
             try
             {
-                
                 foreach (SkillModel skill in skillList)
                 {
                     SkillAbility newSkillAbility = (SkillAbility)Activator.CreateInstance(typeof(SkillAbility).Assembly.GetType(skillScriptName));
                     skill._skillAbilityList.Add(newSkillAbility);
-                    newSkillAbility.Init(skill, scriptName, 0, skill.SkillAbilityList.Count, turnLimit, null);
+                    newSkillAbility.Init(skill, scriptName, 0, skill.SkillAbilityList.Count, turnLimit, buffData);
                 }
             }
             catch (Exception msg) { Main.Logger.LogError($"Couldn't add skill script '{skillScriptName}': {msg}"); }

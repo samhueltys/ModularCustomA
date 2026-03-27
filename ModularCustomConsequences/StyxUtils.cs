@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using Lethe;
 using Lethe.Patches;
 using ModularSkillScripts;
 using ModularSkillScripts.Patches;
@@ -86,7 +87,7 @@ namespace MTCustomScripts
 
                     if (finalSkillList.Count >= max) break;
                 }
-            } 
+            }
             else if (il2cppList is Il2CppSystem.Collections.Generic.List<SkillModel> skillList)
             {
                 for (int i = 0; i < skillList.Count; i++)
@@ -323,7 +324,7 @@ namespace MTCustomScripts
                     bool lookupAll = fragmentedSplitCoinTarget[0].EndsWith("all");
 
                     if (Il2CppSystem.Enum.TryParse<COIN_COLOR_TYPE>(fragmentedSplitCoinTarget[1], true, out COIN_COLOR_TYPE parsedColor))
-                    {   
+                    {
                         for (int y = 0; y < selectedSkill.CoinList.Count; y++)
                         {
                             CoinModel currentColorCoin = selectedSkill.CoinList[y];
@@ -520,7 +521,7 @@ namespace MTCustomScripts
             return finalCoin;
         }
 
-        public static void ProcessEnumOperation<T>(string value, System.Collections.Generic.List<T> list)  where T : struct, Enum
+        public static void ProcessEnumOperation<T>(string value, System.Collections.Generic.List<T> list) where T : struct, Enum
         {
             if (string.IsNullOrEmpty(value) || value.Length < 2) return;
 
@@ -534,7 +535,7 @@ namespace MTCustomScripts
                 else list.Add(enumResult);
             }
         }
-        
+
         public static void GenericModularPatches(BattleUnitModel __instance, int actevent, int actevent_other, BATTLE_EVENT_TIMING timing, SkillModel skillModel_inst = null, BattleActionModel selfAction = null, BattleActionModel oppoAction = null, BattleUnitModel killer = null)
         {
             foreach (PassiveModel passiveModel in __instance._passiveDetail.PassiveList)
@@ -628,7 +629,7 @@ namespace MTCustomScripts
         }
 
         /*
-        public static void TreatCoinAbilities(SkillCoinData coinData, string fullAbility)
+        public static void TreatCoinAbilities(string fullAbility)
         {
             string[] stringAbilityArray = new string[0];
 
@@ -718,5 +719,44 @@ namespace MTCustomScripts
             }
         }
         */
+
+        public static BuffReferenceData TreatBuffData(string fullAbility)
+        {
+            BuffReferenceData buffData = new();
+            string[] fragmentedBuff = fullAbility.Split([';'], StringSplitOptions.RemoveEmptyEntries);
+
+            int buffStack = 0;
+            int buffTurn = 0;
+            int buffActiveRound = 0;
+            int buffLimit = 0;
+            float buffValue = 0f;
+
+            foreach (string value in fragmentedBuff)
+            {
+                if (value.StartsWith("BuffOwner", StringComparison.OrdinalIgnoreCase) && value.Length > 10) buffData.buffOwner = value[10..];
+                else if (value.StartsWith("BuffTarget", StringComparison.OrdinalIgnoreCase) && value.Length > 11) buffData.target = value[11..];
+                else if (value.StartsWith("BuffKeyword", StringComparison.OrdinalIgnoreCase) && value.Length > 12) buffData.buffKeyword = value[12..];
+
+                else if (value.StartsWith("BuffStack", StringComparison.OrdinalIgnoreCase) && value.Length > 9) _ = int.TryParse(value[9..], out buffStack);
+                else if (value.StartsWith("BuffTurn", StringComparison.OrdinalIgnoreCase) && value.Length > 8) _ = int.TryParse(value[8..], out buffTurn);
+                else if (value.StartsWith("BuffActiveRound", StringComparison.OrdinalIgnoreCase) && value.Length > 15) _ = int.TryParse(value[15..], out buffActiveRound);
+                else if (value.StartsWith("BuffLimit", StringComparison.OrdinalIgnoreCase) && value.Length > 9) _ = int.TryParse(value[9..], out buffLimit);
+                else if (value.StartsWith("BuffValue", StringComparison.OrdinalIgnoreCase) && value.Length > 9) _ = float.TryParse(value[9..], out buffValue);
+            }
+
+
+            buffData.stack = buffStack;
+            buffData.turn = buffTurn;
+            buffData.activeRound = buffActiveRound;
+            buffData.limit = buffLimit;
+            buffData.value = buffValue;
+
+
+            BUFF_UNIQUE_KEYWORD buffKeyword = CustomBuffs.ParseBuffUniqueKeyword(buffData.buffKeyword);
+            if (buffKeyword == BUFF_UNIQUE_KEYWORD.None) buffData.buffKeyword = string.Empty;
+            buffData._buffKeyword = buffKeyword;
+
+            return buffData;
+        }
     }
 }
